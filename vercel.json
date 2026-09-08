@@ -1,4 +1,6 @@
 {
-  "installCommand": "npm install --legacy-peer-deps",
+  "installCommand": "pnpm install --no-frozen-lockfile",
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
   "framework": "vite"
 }
