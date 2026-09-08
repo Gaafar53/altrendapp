@@ -5,3 +5,5 @@ client/public/videos/
 log.txt
 nohup.out
 .DS_Store
+.vercel
+.env*
