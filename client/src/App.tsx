@@ -52,7 +52,7 @@ function Router() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={Feed} />
         <Route path="/upload" component={Upload} />
         <Route path="/video/:id" component={VideoDetail} />
         <Route path="/trending" component={Trending} />
