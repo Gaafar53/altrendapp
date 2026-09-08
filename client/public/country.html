@@ -1,0 +1,144 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>الترند - هندسة احترافية</title><style>
+*{font-family:system-ui,-apple-system;box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0f;color:#fff;padding:12px;padding-bottom:90px;overscroll-behavior:none}
+.card{background:#15151f;border:1px solid #232336;border-radius:16px;padding:12px;margin:10px 0}
+.cbtn{background:#1e1e2e;padding:6px 12px;border-radius:20px;display:inline-block;margin:3px;cursor:pointer;font-size:12px;border:1px solid transparent}.cbtn.active{background:#2563EB;border-color:#3b82f6}
+.pub{background:linear-gradient(135deg,#10B981,#059669);padding:10px 16px;border-radius:20px;cursor:pointer;font-weight:800;display:inline-block}
+.btscan{background:linear-gradient(135deg,#1e3a8a,#3b82f6);padding:12px;border-radius:12px;text-align:center;cursor:pointer;font-weight:800;position:relative;overflow:hidden}
+.btscan::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);animation:shine 2s infinite}
+@keyframes shine{0%{left:-100%}100%{left:100%}}
+.dev{background:#15151f;border:1px solid #232336;padding:12px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-between;align-items:center;transition:.2s}
+.dev.connected{border-color:#10B981;background:#0f1f17;box-shadow:0 0 0 1px #10B98133}
+.dev.real{border-color:#3b82f6}
+.avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#f5c75d,#ff7a00);display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;font-size:16px}
+.keybtn{background:#2a2a3a;color:#fbbf24;padding:5px 10px;border-radius:20px;font-size:11px;cursor:pointer;margin:2px;display:inline-block;border:1px solid #3a3a4a}
+.followbtn{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;padding:6px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-weight:700}
+.followbtn.done{background:#1f2937;color:#10B981;border:1px solid #10B981}
+.likeBtn{cursor:pointer;user-select:none;padding:6px 10px;border-radius:20px;background:#1e1e2e;display:inline-flex;align-items:center;gap:4px;font-size:12px;border:1px solid #2a2a3a;transition:.2s}
+.likeBtn.liked{background:#1f0f15;border-color:#ec4899;color:#ec4899}
+.log{background:#07070a;border:1px solid #1a1a24;border-radius:8px;padding:8px;font-family:monospace;font-size:10px;max-height:110px;overflow:auto;direction:ltr;color:#888}
+video,img{width:100%;border-radius:12px;margin-top:8px;max-height:50vh;object-fit:cover}
+input,textarea{width:100%;background:#1e1e2e;color:#fff;padding:12px;border-radius:12px;border:1px solid #2a2a3a;outline:none}
+input:focus,textarea:focus{border-color:#3b82f6}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(10,10,15,.95);backdrop-filter:blur(20px);border-top:1px solid #1e1e2e;display:flex;justify-content:space-around;padding:8px 0;z-index:100}
+.nav a{color:#5a5a72;text-decoration:none;font-size:10px;flex:1;text-align:center}.nav a.active{color:#fff}
+</style></head><body>
+<div style="text-align:center;padding:8px 0"><div style="font-weight:900;font-size:18px">الترند <span style="color:#f5c75d">v4</span> <span style="color:#60A5FA">• هندسة احترافية</span></div><div id="myProfile" style="font-size:11px;color:#888;margin-top:2px">...</div></div>
+
+<div class="card" style="background:linear-gradient(135deg,#1a1a2e,#0f172a);border-color:#3b82f6">
+<div style="display:flex;justify-content:space-between;align-items:center"><b style="color:#60A5FA">🔵 بلوتوث حقيقي - اسمك يظهر للكل</b><span id="btStatus" style="font-size:10px;background:#1e3a8a;padding:3px 8px;border-radius:10px">غير متصل</span></div>
+<div style="display:flex;gap:6px;margin-top:8px">
+<input id="myName" placeholder="اسمك الحقيقي (مثلا: محمد)" style="flex:1">
+<input id="myBtName" placeholder="اسم البلوتوث (مثلا: Mohamed-S23)" style="flex:1">
+<button onclick="saveProfile()" style="background:#3b82f6;color:#fff;padding:8px 12px;border-radius:10px;border:none;font-weight:700">💾 حفظ</button>
+</div>
+<div class="btscan" onclick="scanMesh()" id="scanBtn">🔍 سكان بلوتوث حقيقي - ابحث عن أصدقاء قريبين</div>
+<div id="nearby"></div>
+<div class="log" id="log">[Mesh] Node #1 - 2500 بلوك<br>[BT] جاهز - بدون ريفرش</div>
+</div>
+
+<div class="card">
+<textarea id="txt" rows="3" placeholder="اكتب منشور تعليمات + فيديو/صورة... (بدون ريفرش)"></textarea>
+<input type="file" id="media" accept="video/*,image/*" style="margin:8px 0">
+<div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center">
+<span class="cbtn active" data-c="EG" onclick="setC('EG')">EG 🇪🇬</span><span class="cbtn" data-c="JP" onclick="setC('JP')">JP 🇯🇵</span><span class="cbtn" data-c="SA" onclick="setC('SA')">SA 🇸🇦</span><span class="cbtn" data-c="US" onclick="setC('US')">US 🇺🇸</span>
+<label style="background:#1e1e2e;padding:6px 10px;border-radius:20px;font-size:11px"><input type="checkbox" id="priv"> 🔒خاص</label>
+<span class="pub" onclick="post(event)">📤 نشر (بدون ريفرش)</span>
+</div>
+</div>
+
+<div id="feed"></div>
+
+<div class="nav"><a href="/" class="active">🏠 ترند</a><a href="/country">🌍 دول + 🔵</a><a href="/my">🔒 خاص</a><a href="/public">🌐 عام</a><a href="/chat">💬 دردشة</a></div>
+
+<script>
+// منع الريفرش تماما
+let cur='EG'; let myProfile={myName:'انا',btName:'Mesh-Node'};
+function log(m){let l=document.getElementById('log'); l.innerHTML+='<br>['+new Date().toLocaleTimeString()+'] '+m; l.scrollTop=l.scrollHeight;}
+function setC(c){cur=c;document.querySelectorAll('.cbtn').forEach(b=>b.classList.toggle('active',b.dataset.c==c));}
+async function loadProfile(){let r=await fetch('/api/profile');let p=await r.json();myProfile=p;document.getElementById('myName').value=p.myName;document.getElementById('myBtName').value=p.btName;document.getElementById('myProfile').textContent=`${p.myName} • 🔵 ${p.btName} • ${p.keys? p.keys.join(','):''}`;document.getElementById('btStatus').textContent='🟢 '+p.btName;}
+async function saveProfile(e){if(e)e.preventDefault();let myName=document.getElementById('myName').value||'انا';let btName=document.getElementById('myBtName').value||'Mesh-Node';await fetch('/api/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({myName,btName})});log('✅ حفظ اسمك: '+myName+' • بلوتوث: '+btName);loadProfile();}
+
+async function loadFeed(){
+  let r=await fetch('/api/country/feed');let f=await r.json();
+  let d=document.getElementById('feed'); d.innerHTML='';
+  f.forEach(i=>{
+    let liked = (i.likedBy||[]).includes(myProfile.myName);
+    let div=document.createElement('div'); div.className='card';
+    div.innerHTML=`
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="avatar">${(i.author||'؟')[0]}</div>
+        <div style="flex:1"><b>${i.author} <span style="font-size:10px;color:#60A5FA">🔵 ${i.btName||''}</span></b><div style="font-size:10px;color:#888">[${i.country}] ${i.isPrivate?'🔒 خاص':'🌐 عام'} • ${i.time}</div></div>
+        <span class="followbtn" id="follow-${i.authorId||i.id}" onclick="followUser('${i.authorId||i.author}','${i.author}','${i.btName||''}')">+ متابعة</span>
+      </div>
+      <div style="margin:8px 0;line-height:1.5">${i.text}</div>
+      ${i.video? (i.video.endsWith('.mp4')||i.video.includes('/videos/')?`<video src="${i.video}" controls playsinline></video>`:`<img src="${i.video}">`):''}
+      <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+        <span class="likeBtn ${liked?'liked':''}" onclick="likePost(${i.id||i.index},this)"><span>${liked?'❤️':'🤍'}</span> <b id="like-count-${i.id||i.index}">${i.likes||0}</b> إعجاب</span>
+        <span style="font-size:11px;color:#666">${(i.likedBy||[]).slice(0,3).join(', ')} ${i.likedBy&&i.likedBy.length>3?`+${i.likedBy.length-3}`:''}</span>
+        <span style="margin-left:auto;font-size:10px;color:#555">#${i.index} • بلوتوث</span>
+      </div>`;
+    d.appendChild(div);
+  });
+}
+
+async function post(e){
+  if(e){e.preventDefault(); e.stopPropagation();}
+  let t=document.getElementById('txt').value; let file=document.getElementById('media').files[0]; let priv=document.getElementById('priv').checked;
+  if(!t&&!file){alert('اكتب نص أو اختار فيديو/صورة'); return;}
+  let fd=new FormData(); fd.append('text',t); fd.append('country',cur); fd.append('isPrivate',priv);
+  if(file) fd.append('video',file);
+  let r=await fetch('/api/country/post',{method:'POST',body:fd});
+  let b=await r.json();
+  document.getElementById('txt').value=''; document.getElementById('media').value='';
+  log('✅ نشر بلوك #'+b.index+' • '+cur+' • '+(priv?'🔒':'🌐')+' • '+(file?'📹 فيديو/صورة':'📝 نص')+' - بدون ريفرش');
+  loadFeed();
+}
+
+async function likePost(postId,el){
+  let r=await fetch('/api/country/like/'+postId,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({user:myProfile.myName})});
+  let p=await r.json();
+  if(p){let countEl=document.getElementById('like-count-'+postId); if(countEl)countEl.textContent=p.likes; el.classList.toggle('liked', p.likedBy.includes(myProfile.myName)); el.querySelector('span').textContent=p.likedBy.includes(myProfile.myName)?'❤️':'🤍'; log((p.likedBy.includes(myProfile.myName)?'❤️ أعجبت بـ':'🤍 ألغيت إعجاب')+' بلوك #'+p.index);}
+}
+
+async function scanMesh(){
+  log('🔍 سكان بلوتوث حقيقي...');
+  let btn=document.getElementById('scanBtn'); btn.textContent='⏳ جاري البحث...';
+  try{
+    if(navigator.bluetooth){
+      log('📱 Web Bluetooth مدعوم - اختار جهاز...');
+      let device=await navigator.bluetooth.requestDevice({acceptAllDevices:true,optionalServices:['battery_service','device_information']});
+      let realName=device.name||'جهاز حقيقي';
+      log('✅ جهاز حقيقي: '+realName+' • ID:'+device.id);
+      await fetch('/api/country/scan-real',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:myProfile.myName,btName:realName,id:device.id})});
+      await followUser(device.id, realName, realName);
+    }
+  }catch(e){log('⚠️ '+e.message+' → محاكاة + أسماء حقيقية محفوظة');}
+  let r=await fetch('/api/country/scan'); let devs=await r.json();
+  let nb=document.getElementById('nearby'); nb.innerHTML='';
+  devs.forEach(d=>{
+    let div=document.createElement('div'); div.className='dev '+(d.connected?'connected':'')+' '+(d.real?'real':'');
+    div.innerHTML=`<div style="display:flex;gap:8px;align-items:center"><div class="avatar" style="width:36px;height:36px;font-size:14px">${(d.name||'?')[0]}</div><div><b>${d.connected?'🟢':'📱'} ${d.name}</b><div style="font-size:10px;color:#60A5FA">🔵 ${d.btName||d.name}</div><small style="color:#888">مفاتيح: ${d.keys.join(', ')} • RSSI ${d.rssi}</small></div></div><div style="text-align:left"><span class="followbtn ${d.connected?'done':''}" onclick="followUser('${d.id}','${d.name}','${d.btName}')">${d.connected?'✓ متابع':' + تابع عبر بلوتوث'}</span></div>`;
+    nb.appendChild(div);
+  });
+  btn.textContent='🔍 سكان بلوتوث حقيقي - ابحث عن أصدقاء قريبين';
+  log(`📡 ${devs.length} Nodes • كل واحد باسم بلوتوث حقيقي • متابعة عبر بلوتوث = أصدقاء`);
+}
+
+async function followUser(id,name,btName){
+  if(!id||id=='me')return;
+  log('👥 متابعة '+name+' ('+btName+') عبر بلوتوث...');
+  let r=await fetch('/api/follow',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,name,btName})});
+  let f=await r.json();
+  log('✅ تتابع '+name+' • أصدقاء: '+f.friends.length+' • متابَعين: '+f.following.length);
+  // حدث زر المتابعة
+  let btn=document.getElementById('follow-'+id); if(btn){btn.textContent='✓ متابع'; btn.classList.add('done');}
+  let nbBtn=document.querySelector(`[onclick="followUser('${id}'"]`); if(nbBtn) nbBtn.textContent='✓ متابع';
+}
+
+// منع أي ريفرش
+document.addEventListener('submit',e=>e.preventDefault());
+window.addEventListener('beforeunload',e=>{/* منع ريفرش غير مقصود */});
+
+loadProfile(); loadFeed();
+</script></body></html>

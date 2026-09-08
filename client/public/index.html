@@ -1,0 +1,47 @@
+<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>الترند v4 - شامل</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@600;800;900&display=swap');
+*{font-family:'Cairo',system-ui;margin:0;padding:0;box-sizing:border-box}
+body{background:#050508;color:#fff}
+.top{position:sticky;top:0;background:rgba(5,5,8,.9);backdrop-filter:blur(20px);border-bottom:1px solid #1c1c28;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#f5c75d,#ff7a00);display:flex;align-items:center;justify-content:center;font-weight:900;color:#000}
+.pill{padding:6px 10px;border-radius:20px;font-size:11px;border:1px solid #232336;background:#15151f}
+.pill.bt{background:linear-gradient(135deg,#1e3a8a,#3b82f6);cursor:pointer}
+.card{background:#10101a;border:1px solid #1c1c28;border-radius:16px;padding:12px;margin:10px}
+.btn{padding:10px 14px;border-radius:10px;border:none;font-weight:800;cursor:pointer}
+.feed{max-width:640px;margin:0 auto;padding-bottom:90px}
+.post{background:#10101a;border:1px solid #1c1c28;border-radius:16px;margin:12px;overflow:hidden}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(5,5,8,.92);backdrop-filter:blur(20px);border-top:1px solid #1c1c28;display:flex;justify-content:space-around;padding:8px 0;max-width:640px;margin:0 auto;left:50%;transform:translateX(-50%);width:100%}
+.nav a{color:#5a5a72;text-decoration:none;font-size:10px;text-align:center;flex:1}.nav a.active{color:#fff}
+</style></head><body>
+<div class="top"><div style="display:flex;gap:10px;align-items:center"><div class="logo">ت</div><div><div style="font-weight:900">الترند <span style="color:#f5c75d">v4 شامل</span></div><div style="font-size:9px;color:#777">انشر فكرتك، اصنع الترند، واربح مكانك بين الأبطال</div></div></div><div style="display:flex;gap:6px"><div class="pill bt" onclick="location.href='/country'">🌍 دول + بلوتوث</div><div class="pill" id="count">2500 بلوك</div></div></div>
+
+<div class="feed">
+<div class="card" style="background:linear-gradient(135deg,#1a1a2e,#12121f)"><b>🔥 الترند v4 + توسيع شامل</b><div style="font-size:11px;color:#888;margin-top:6px">تعديلاتك موجودة في:<br>• /country = فيديو + خاص/عام (منشور تعليمات)<br>• /my = صفحتي الخاصة 🔒<br>• /public = عام للكل 🌐<br>• /chat = دردشة Mesh 💬<br>• /eg-chain = السلسلة 315</div><div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"><a href="/country" style="background:#2563EB;color:#fff;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:11px">🌍 دول + فيديو</a><a href="/my" style="background:#7c3aed;color:#fff;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:11px">🔒 خاص</a><a href="/public" style="background:#10B981;color:#fff;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:11px">🌐 عام</a><a href="/chat" style="background:#F59E0B;color:#000;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:11px">💬 دردشة</a></div></div>
+
+<div id="feed"></div>
+</div>
+
+<div class="nav"><a href="/" class="active"><span>🏠</span><br>الرئيسية</a><a href="/country"><span>🌍</span><br>دول</a><a href="/public"><span>🌐</span><br>عام</a><a href="/chat"><span>💬</span><br>دردشة</a><a href="/eg-chain"><span>⛓️</span><br>سلسلة</a></div>
+
+<script>
+async function load(){
+  try{
+    let r=await fetch('/api/chain'); let chain=await r.json();
+    document.getElementById('count').textContent=chain.length+' بلوك';
+    let feed=document.getElementById('feed');
+    chain.slice().reverse().slice(0,20).forEach(b=>{
+      let d=document.createElement('div'); d.className='post';
+      d.innerHTML=`<div style="padding:10px;display:flex;gap:8px;align-items:center"><div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f5c75d,#ff7a00);display:flex;align-items:center;justify-content:center;font-weight:900;color:#000">${(b.label||'ت')[0]}</div><div><b style="font-size:13px">${b.label||'فيديو'}</b><div style="font-size:10px;color:#777">#${b.index} • ${b.time||''}</div></div></div><div style="padding:0 10px 8px;font-size:12px;color:#ccc">${b.value||b.label||''} <span style="color:#f5c75d">#الترند_v4</span></div>${b.video?`<video src="${b.video}" controls style="width:100%;max-height:50vh"></video>`:''}<div style="display:flex;border-top:1px solid #1c1c28"><div style="flex:1;padding:8px;text-align:center;font-size:11px;color:#888">❤️ إعجاب</div><div style="flex:1;padding:8px;text-align:center;font-size:11px;color:#3b82f6" onclick="location.href='/country'">🔵 بلوتوث</div><div style="flex:1;padding:8px;text-align:center;font-size:11px;color:#888">↗️ مشاركة</div></div>`;
+      feed.appendChild(d);
+    });
+    // اعرض كمان بوستات الدول
+    let r2=await fetch('/api/public/feed'); let pub=await r2.json();
+    pub.slice(0,10).forEach(b=>{
+      let d=document.createElement('div'); d.className='post'; d.style.borderColor='#2563EB';
+      d.innerHTML=`<div style="padding:10px"><b style="color:#60A5FA">[${b.country}] ${b.author} ${b.isPrivate?'🔒 خاص':'🌐 عام'}</b><div style="font-size:12px;margin-top:4px">${b.text}</div>${b.video?`<video src="${b.video}" controls style="width:100%;max-height:40vh;margin-top:6px"></video>`:''}<div style="font-size:10px;color:#555;margin-top:4px">${b.time}</div></div>`;
+      feed.appendChild(d);
+    });
+  }catch(e){}
+}
+load();
+</script></body></html>

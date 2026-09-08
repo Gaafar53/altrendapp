@@ -1,0 +1,25 @@
+nohup: ignoring input
+3:06:52 PM [vite] (client) Forced re-optimization of dependencies
+
+  VITE v7.3.6  ready in 1753 ms
+
+  ➜  Local:   http://localhost:5174/
+  ➜  Network: http://10.194.245.60:5174/
+(!) %VITE_ANALYTICS_ENDPOINT% is not defined in env variables found in /index.html. Is the variable mistyped?
+(!) %VITE_ANALYTICS_WEBSITE_ID% is not defined in env variables found in /index.html. Is the variable mistyped?
+Malformed URI sequence in request URL: /%VITE_ANALYTICS_ENDPOINT%/umami
+(!) %VITE_ANALYTICS_ENDPOINT% is not defined in env variables found in /index.html. Is the variable mistyped?
+(!) %VITE_ANALYTICS_WEBSITE_ID% is not defined in env variables found in /index.html. Is the variable mistyped?
+Malformed URI sequence in request URL: /%VITE_ANALYTICS_ENDPOINT%/umami
+(!) %VITE_ANALYTICS_ENDPOINT% is not defined in env variables found in /index.html. Is the variable mistyped?
+(!) %VITE_ANALYTICS_WEBSITE_ID% is not defined in env variables found in /index.html. Is the variable mistyped?
+Malformed URI sequence in request URL: /%VITE_ANALYTICS_ENDPOINT%/umami
+(!) %VITE_ANALYTICS_ENDPOINT% is not defined in env variables found in /index.html. Is the variable mistyped?
+(!) %VITE_ANALYTICS_WEBSITE_ID% is not defined in env variables found in /index.html. Is the variable mistyped?
+Malformed URI sequence in request URL: /%VITE_ANALYTICS_ENDPOINT%/umami
+(!) %VITE_ANALYTICS_ENDPOINT% is not defined in env variables found in /index.html. Is the variable mistyped?
+(!) %VITE_ANALYTICS_WEBSITE_ID% is not defined in env variables found in /index.html. Is the variable mistyped?
+Malformed URI sequence in request URL: /%VITE_ANALYTICS_ENDPOINT%/umami
+(!) %VITE_ANALYTICS_ENDPOINT% is not defined in env variables found in /index.html. Is the variable mistyped?
+(!) %VITE_ANALYTICS_WEBSITE_ID% is not defined in env variables found in /index.html. Is the variable mistyped?
+Malformed URI sequence in request URL: /%VITE_ANALYTICS_ENDPOINT%/umami

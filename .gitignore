@@ -1,0 +1,7 @@
+node_modules/
+data-country/
+client/public/videos/
+*.mp4
+log.txt
+nohup.out
+.DS_Store

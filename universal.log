@@ -1,0 +1,51 @@
+nohup: ignoring input
+=== برمجة على كل البلوكشينات مرة واحدة ===
+
+[1/9] Phone Chain - Block 128924667 - Locked: true
+ ✓ كودك شغال هنا: instant-lock.js
+
+[2/9] BSC Mainnet - غير متصل حاليا
+
+[3/9] Ethereum - غير متصل حاليا
+
+[4/9] Polygon - غير متصل حاليا
+
+[5/9] Arbitrum - غير متصل حاليا
+
+[6/9] Base - غير متصل حاليا
+
+[7/9] Avalanche - غير متصل حاليا
+
+[8/9] Optimism - غير متصل حاليا
+
+[9/9] Linea - غير متصل حاليا
+
+=== الكود الواحد لكل البلوكشينات ===
+
+// هذا العقد يشتغل على كل البلوكشينات الـ 8 بنفس الكود
+// Solidity - EVM Compatible
+
+contract UniversalPhoneLock {
+    bool public isLocked = true;
+    uint256 public phoneBlock = 128924667;
+    address public phoneMaster = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266;
+
+    // يمنع إنشاء عملات نصب على أي بلوكشين
+    mapping(address => bool) public blockedScam;
+
+    function blockScamCoin(address scam) external {
+        require(msg.sender == phoneMaster, "Only Phone Master");
+        blockedScam[scam] = true;
+    }
+
+    // نفس الكود على BSC, ETH, Polygon, Arbitrum...
+}
+    
+
+=== ازاي تبرمج على الكل مرة واحدة؟ ===
+1. اكتب الكود مرة واحدة (زي فوق)
+2. npx hardhat deploy --network bsc → يتنشر على BSC
+3. npx hardhat deploy --network eth → نفس الكود على ETH
+4. نفس الكود على هاتفك: node instant-lock.js
+
+✓ برمجت مرة = شغال على 9 بلوكشينات

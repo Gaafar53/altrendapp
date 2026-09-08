@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE `follows` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`followerId` int NOT NULL,\n\t`followingId` int NOT NULL,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `follows_id` PRIMARY KEY(`id`)\n);\n\nCREATE TABLE `notifications` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`userId` int NOT NULL,\n\t`fromUserId` int NOT NULL,\n\t`type` enum('like','comment','follow') NOT NULL,\n\t`videoId` int,\n\t`message` text NOT NULL,\n\t`isRead` boolean NOT NULL DEFAULT false,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `notifications_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway02.us-east-1.prod.aws.tidbcloud.com --port 4000 --user iDSnUWFEgrK3a53.6423ac9d187c --database RyoDDAL5oP58bXRkc86EpD --execute CREATE TABLE `follows` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`followerId` int NOT NULL,\n\t`followingId` int NOT NULL,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `follows_id` PRIMARY KEY(`id`)\n);\n\nCREATE TABLE `notifications` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`userId` int NOT NULL,\n\t`fromUserId` int NOT NULL,\n\t`type` enum('like','comment','follow') NOT NULL,\n\t`videoId` int,\n\t`message` text NOT NULL,\n\t`isRead` boolean NOT NULL DEFAULT false,\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\tCONSTRAINT `notifications_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 2180
+}

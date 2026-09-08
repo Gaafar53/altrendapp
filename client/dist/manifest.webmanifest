@@ -1,0 +1,14 @@
+{
+  "name": "الترند - منصة الفيديو الاجتماعية",
+  "short_name": "الترند",
+  "description": "منصة عربية لمشاركة الفيديوهات، اكتشاف الترند، التحديات، الألعاب والتفاعل الاجتماعي.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0b0a16",
+  "background_color": "#0b0a16",
+  "categories": ["social", "entertainment", "video"]
+}

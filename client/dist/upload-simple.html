@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نشر فيديو - 315</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0a0a0f;color:#fff;font-family:system-ui;padding:16px;max-width:480px;margin:auto}
+.card{background:#15151d;border:1px solid rgba(255,255,255,.1);border-radius:16px;overflow:hidden;margin:12px 0}
+.btn{width:100%;height:48px;border-radius:12px;border:0;font-weight:900;font-size:15px;cursor:pointer;background:linear-gradient(90deg,#f5c75d,#8b5cf6);color:#000}
+.input{width:100%;height:44px;background:#1a1a25;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;padding:0 12px}
+.area{width:100%;background:#1a1a25;border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#fff;padding:12px}
+.progress{height:6px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden;margin:10px 0}
+.bar{height:100%;background:linear-gradient(90deg,#f5c75d,#8b5cf6);width:0%;transition:width.2s}
+video{width:100%;max-height:60vh;display:block;background:#000}
+.msg{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:10px;border-radius:10px;text-align:center;font-size:12px;margin:10px 0}
+</style>
+</head>
+<body>
+<h2>✨ نشر فيديو جديد ⛓️</h2>
+<p style="font-size:11px;color:#aaa">فيديوهاتك هتتوثق في سلسلة 315 - صفحة بسيطة بدون React</p>
+
+<div class="card" id="drop" style="padding:30px;text-align:center;cursor:pointer" onclick="document.getElementById('file').click()">
+<div style="font-size:30px">🎥</div>
+<div style="font-size:13px;font-weight:700;margin-top:8px">دوس لاختيار فيديو</div>
+<div style="font-size:11px;color:#888;margin-top:4px">يا سعد من شاهد الرسول ﷺ</div>
+<video id="prev" controls style="display:none;margin-top:12px;border-radius:10px"></video>
+<div id="info" style="font-size:10px;color:#aaa;margin-top:6px"></div>
+</div>
+<input type="file" id="file" accept="video/*" style="display:none">
+
+<div id="prog" class="progress" style="display:none"><div id="bar" class="bar"></div></div>
+<div id="msg" class="msg" style="display:none"></div>
+
+<input class="input" id="title" placeholder="عنوان الفيديو * صلي الله عليه وسلم" style="margin:10px 0">
+<textarea class="area" id="desc" rows="2" placeholder="الوصف / الخطبة"></textarea>
+
+<button class="btn" id="upBtn" style="margin-top:12px">⬆️ نشر الفيديو</button>
+<p style="text-align:center;font-size:10px;color:#666;margin-top:8px">كل فيديو = 1/315 - نشر للجمهور العام</p>
+
+<script>
+const fileEl=document.getElementById('file'), prev=document.getElementById('prev'), info=document.getElementById('info'), bar=document.getElementById('bar'), prog=document.getElementById('prog'), msg=document.getElementById('msg'), titleEl=document.getElementById('title');
+let file=null;
+fileEl.onchange=e=>{
+  file=e.target.files[0]; if(!file) return;
+  if(file.size>150*1024*1024){ alert('الفيديو كبير >150MB'); return; }
+  prev.src=URL.createObjectURL(file); prev.style.display='block';
+  info.textContent=file.name+' - '+(file.size/1024/1024).toFixed(1)+'MB';
+};
+document.getElementById('upBtn').onclick=()=>{
+  if(!file){ alert('اختار فيديو'); return; }
+  if(!titleEl.value.trim()){ alert('اكتب عنوان'); return; }
+  const form=new FormData(); form.append('video',file); form.append('title',titleEl.value); form.append('description',document.getElementById('desc').value);
+  const xhr=new XMLHttpRequest();
+  prog.style.display='block'; msg.style.display='block'; msg.textContent='جاري الرفع...';
+  xhr.upload.onprogress=ev=>{ if(ev.lengthComputable){ const p=Math.round(ev.loaded/ev.total*100); bar.style.width=p+'%'; msg.textContent='جاري الرفع '+p+'% ⛓️'; } };
+  xhr.onload=()=>{ if(xhr.status>=200&&xhr.status<300){ try{ const d=JSON.parse(xhr.responseText); msg.textContent='✅ اتنشر بلوك #'+(d.block?.index||'')+' '+titleEl.value; bar.style.width='100%'; setTimeout(()=>location.href='/eg-chain',1200);}catch{ msg.textContent='✅ اتنشر!'; location.href='/eg-chain'; } } else { msg.textContent='❌ فشل: '+xhr.responseText; } };
+  xhr.onerror=()=>{ msg.textContent='❌ Failed to fetch - تأكد السيرفر شغال: node server-eg-native.cjs على 3001'; };
+  xhr.open('POST','/api/upload'); xhr.send(form);
+};
+</script>
+</body>
+</html>
